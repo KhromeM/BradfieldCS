@@ -26,22 +26,22 @@ int isPangram(char *line, int len){
 
 int main(){
     // Exercise 2: Bitcount
-    // int arr[] = {0,1,2,3,4,5,6,7,8,9,0xffffffff};
-    // for (int i = 0; i < 11; i++){
-    //     printf("%d has %d ones\n", arr[i], bitcount(arr[i]));
-    // }
+    int arr[] = {0,1,2,3,4,5,6,7,8,9,0xffffffff};
+    for (int i = 0; i < 11; i++){
+        printf("%d has %d ones\n", arr[i], bitcount(arr[i]));
+    }
 
     // Exercise 3: Fast Pangram
-    // FILE *text = fopen("./fast-pangram/cases.txt","r");
-    // char *line = NULL;
-    // ssize_t len = 0;
-    // while(getline(&line,&len,text) != -1){
-    //     if (isPangram(line,len))
-    //         printf("%s", line);
-    // }
-    // fclose(text);
-    // if (line)
-    //     free(line);
+    FILE *text = fopen("./fast-pangram/cases.txt","r");
+    char *line = NULL;
+    ssize_t len = 0;
+    while(getline(&line,&len,text) != -1){
+        if (isPangram(line,len))
+            printf("%s", line);
+    }
+    fclose(text);
+    if (line)
+        free(line);
 
     
     return 0;
