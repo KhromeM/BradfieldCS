@@ -10,13 +10,11 @@ typedef struct DA {
   int size;
 } DA;
 
-
 DA* DA_new (void) {
-  int cap = 8;
   DA* da = (DA*) malloc(sizeof(DA));
-  void** arr = calloc((size_t) cap,sizeof(void*));
+  void** arr = calloc((size_t) STARTING_CAPACITY ,sizeof(void*));
   da->arr = arr;
-  da->cap = cap;
+  da->cap = STARTING_CAPACITY;
   da->size = 0;
   return da;
 }
@@ -26,17 +24,14 @@ int DA_size(DA *da) {
 }
 
 void DA_push (DA* da, void* x) {
-  // TODO push to the end
   if (da->cap == da->size) {
     da->cap *= 2;
     da->arr = realloc(da->arr,sizeof(void*)*da->cap);
   } 
   da->arr[da->size++] = x;
-
 }
 
 void* DA_pop(DA *da) {
-  // TODO pop from the end
   if (da->size){
     int index = --(da->size);
     void* ans = da->arr[index];
@@ -44,25 +39,20 @@ void* DA_pop(DA *da) {
     return ans;
   }
   return NULL;
-
 }
 
 void DA_set(DA *da, void *x, int i) {
-  // TODO set at a given index, if possible
   if (i < da->cap && i > -1)
     da->arr[i] = x;
 }
 
 void* DA_get(DA *da, int i) {
-  // TODO get from a given index, if possible
     if (i < da->cap && i > -1)
       return da->arr[i];
     return NULL;
 }
 
-
 void DA_free(DA *da) {
-  // TODO deallocate anything on the heap
   free(da->arr);
   free(da);
 }
