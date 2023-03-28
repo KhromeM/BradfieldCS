@@ -27,6 +27,7 @@ void DA_push (DA* da, void* x) {
   if (da->cap == da->size) {
     da->cap *= 2;
     da->arr = realloc(da->arr,sizeof(void*)*da->cap);
+    printf("New Capacity: %d\n", da->cap);
   } 
   da->arr[da->size++] = x;
 }
@@ -86,7 +87,7 @@ int main() {
     // expansion test
     DA *da2 = DA_new(); // use another DA to show it doesn't get overriden
     DA_push(da2, &x);
-    int i, n = 100 * STARTING_CAPACITY, arr[n];
+    int i, n = 100000 * STARTING_CAPACITY, arr[n];
     for (i = 0; i < n; i++) {
       arr[i] = i;
       DA_push(da, &arr[i]);
