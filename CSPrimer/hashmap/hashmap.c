@@ -95,7 +95,7 @@ int main() {
    char key[MAX_KEY_SIZE];
    for (i = 0; i < n; i++) {
      ns[i] = i;
-     sprintf(key, "item %d", i);
+     printf("item %d", i);
      Hashmap_set(h, key, &ns[i]);
    }
    for (i = 0; i < n; i++) {
