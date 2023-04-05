@@ -16,14 +16,10 @@ def eval(exp):
         elif type(exp.op) == ast.Add:
             val = l + r
         elif type(exp.op) == ast.Div:
-            val = l + r
+            val = l / r
         elif type(exp.op) == ast.Sub:
-            val = l + r
+            val = l - r
         return ast.Constant(val)
     return exp
 r = eval(node.body)
 print(ast.dump(r, indent=4))
-
-def asm(exp):
-    ans = ''
-    
