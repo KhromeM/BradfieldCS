@@ -1,8 +1,14 @@
 #include <time.h>
 #include <stdio.h>
+#include <sys/time.h>
 
 int main () {
-	struct timespec res;
-	clock_getres(CLOCK_MONOTONIC_RAW, &res);
-	printf("%ld sec %ld nsec\n", res.tv_sec, res.tv_nsec);
+	struct timeval t;
+	gettimeofday(&t,NULL);
+	printf("Time: %d\n", t.tv_sec);
+	sleep(5);
+	gettimeofday(&t, NULL);
+	printf("Time: %d\n", t.tv_sec);
+
+
 }

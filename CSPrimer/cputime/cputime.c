@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/resource.h>
+#include <sys/time.h>
 
 #define SLEEP_SEC 3
 #define NUM_MULS 100000000
@@ -10,26 +12,42 @@
 
 // TODO define this struct
 struct profile_times {
-  //pid //  total time // user time // system time
   int id;
-  clock_t user;
-  clock_t total;
-
+  struct timeval user;
+  struct timeval system;
+  struct timeval total;
 };
 
 // TODO populate the given struct with starting information
 void profile_start(struct profile_times *t) {
   t->id = (int) getpid();
-  t->user = clock();
-  t->total = clock_gettime(CLOCK_PROCESS_CPUTIME_ID);
+  struct rusage r;
+  getrusage(RUSAGE_SELF, &r);
+  t->user = r.ru_utime;
+  t->system = r.ru_stime;
+  struct timeval tp;
+  gettimeofday(&tp,NULL);
+  t->total = tp;
 }
 
-// TODO given starting information, compute and log differences to now
+
 void profile_log(struct profile_times *t) {
-  int cycles = clock();
-  int delta = cycles - t->user;
-  t->user = cycles;
-  printf("PID: %d User Time: %d\n",t->id,delta);
+  struct rusage r;
+  getrusage(RUSAGE_SELF, &r);
+  struct timeval tp;
+  gettimeofday(&tp,NULL);
+  
+
+  float d_user = (r.ru_utime.tv_sec - t->user.tv_sec) + (r.ru_utime.tv_usec - t->user.tv_usec) * .000001;
+  float d_system = (r.ru_stime.tv_sec - t->system.tv_sec) + (r.ru_stime.tv_usec - t->system.tv_usec) * .000001;
+  float d_total = (tp.tv_sec - t->total.tv_sec) + (tp.tv_usec - t->total.tv_usec) *  .000001;
+
+  t->total = tp;
+  t->user = r.ru_utime;
+  t->system = r.ru_stime;
+
+
+  printf("PID: %d User Time: %.2fms System Time: %.2fms Total Time: %.2fms\n",t->id,d_user,d_system, d_total);
 }
 
 int main(int argc, char *argv[]) {
